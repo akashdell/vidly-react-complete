@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import auth from '../services/authService'
 import { register } from "../services/userService";
 
 class RegisterForm extends Form {
@@ -28,8 +29,8 @@ class RegisterForm extends Form {
     try {
       const response = await register(this.state.data);
       console.log(response);
-      localStorage.setItem("token", response.headers['x-auth-token'])
-      this.props.history.push('/');
+      auth.loginWithJwt(response.headers['x-auth-token'])
+      window.location = '/'
     }
     catch (ex) {
       if (ex.response && ex.response.status === 400) {
